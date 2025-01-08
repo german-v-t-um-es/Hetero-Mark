@@ -98,3 +98,5 @@ compile_log.txt
 *.hsaco
 
 
+hmark-data/
+hmark-data.zip

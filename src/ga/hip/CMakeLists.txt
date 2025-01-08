@@ -1,17 +1,13 @@
-set(FOLDER_NAME ga_hip)
-set(SUBDIRECTORIES)
-set(SRC_FILES
-        main.hip
-        ga_hip_benchmark.hip
-)
-set(HEADER_FILES
-        ga_hip_benchmark.h
-)
-set(TEST_FILES)
-set(EXTRA_FILES)
-
 if (${HMARK_BUILD_HIP})
-    add_executable(${FOLDER_NAME} ${HEADER_FILES} ${SRC_FILES})
-    target_link_libraries(${FOLDER_NAME}
-            ga time_measurement command_line_option benchmark hip::host hip::device)
+    add_executable(ga_hip main.hip ga_hip_benchmark.hip ga_hip_benchmark.h)
+    target_include_directories(ga_hip PUBLIC ${CMAKE_SOURCE_DIR})
+    target_link_libraries(ga_hip PUBLIC ga time_measurement command_line_option
+            benchmark hip::host hip::device)
+endif ()
+
+if (${HMARK_BUILD_HIP_NVIDIA})
+    add_executable(ga_hip main.hip ga_hip_benchmark.hip ga_hip_benchmark.h)
+    target_include_directories(ga_hip PUBLIC ${CMAKE_SOURCE_DIR})
+    target_link_libraries(ga_hip PUBLIC ga time_measurement command_line_option
+            benchmark)
 endif ()

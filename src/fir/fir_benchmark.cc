@@ -68,6 +68,7 @@ void FirBenchmark::Initialize() {
 }
 
 void FirBenchmark::Verify() {
+  printf("Verification process...\n");
   bool has_error = false;
   float *cpu_output = new float[num_total_data_];
   for (unsigned int i = 0; i < num_total_data_; i++) {

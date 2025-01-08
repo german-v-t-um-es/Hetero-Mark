@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.28)
 project(Hetero-Mark LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -6,10 +6,23 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
+if (NOT DEFINED CUDA_PATH)
+    set(CUDA_PATH "/usr/local/cuda" CACHE STRING "Default CUDA installation directory.")
+endif()
+
 option(HMARK_BUILD_HIP "Build all Hetero-mark benchmarks for HIP" OFF)
+option(HMARK_BUILD_HIP_NVIDIA "Build all Hetero-mark benchmarks for HIP with NVIDIA architecture" OFF)
 option(HMARK_BUILD_CUDA "Build all Hetero-mark benchmarks for CUDA" OFF)
 option(HMARK_BUILD_OPENCL20 "Build all Hetero-mark benchmarks for OpenCL2.0" OFF)
 option(HMARK_BUILD_OPENCL12 "Build all Hetero-mark benchmarks for OpenCL1.2" OFF)
+
+if (${HMARK_BUILD_HIP_NVIDIA})
+    set(CMAKE_HIP_PLATFORM "nvidia" CACHE STRING "Default HIP platform.")
+    set(CMAKE_HIP_COMPILER "${CUDA_PATH}/bin/nvcc")
+    set(CMAKE_HIP_ARCHITECTURES "native")
+    enable_language(HIP)
+    find_package(HIP REQUIRED)
+endif ()
 
 if (${HMARK_BUILD_HIP})
     enable_language(HIP)
@@ -29,7 +42,6 @@ include(ExternalProject)
 include(StyleCheck)
 
 set(FOLDER_NAME Hetero-Mark)
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 # Include from path root
