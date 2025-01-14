@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.2)
 project(Hetero-Mark LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -6,31 +6,22 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
-option(HMARK_BUILD_HIP "Build all Hetero-mark benchmarks for HIP" OFF)
-option(HMARK_BUILD_CUDA "Build all Hetero-mark benchmarks for CUDA" OFF)
-option(HMARK_BUILD_OPENCL20 "Build all Hetero-mark benchmarks for OpenCL2.0" OFF)
-option(HMARK_BUILD_OPENCL12 "Build all Hetero-mark benchmarks for OpenCL1.2" OFF)
-
-if (${HMARK_BUILD_HIP})
-    enable_language(HIP)
-    find_package(HIP REQUIRED)
-endif ()
-
-if (${HMARK_BUILD_OPENCL20} OR ${HMARK_BUILD_OPENCL12})
-    find_package(OpenCL REQUIRED)
-endif ()
-
-if (${HMARK_BUILD_CUDA})
-    enable_language(CUDA)
-endif ()
-
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 include(ExternalProject)
+include(HCC)
+include(HIP)
+include(CUDA)
+include(OpenCL)
 include(StyleCheck)
 
 set(FOLDER_NAME Hetero-Mark)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pthread")
+add_definitions(-std=c++11)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+# For Clang
+if (CMAKE_CXX_COMPILER_ID MATCHES "[cC][lL][aA][nN][gG]")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-command-line-argument")
+endif ()
 
 # Include from path root
 include_directories(${CMAKE_SOURCE_DIR})

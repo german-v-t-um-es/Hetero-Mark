@@ -20,7 +20,7 @@ set( SRC_FILE
 ###############################################################
 
 set(CMAKE_SUPPRESS_REGENERATION TRUE)
-cmake_minimum_required( VERSION 3.21 )
+cmake_minimum_required( VERSION 3.2 )
 project( ${FOLDER_NAME} )
 
 

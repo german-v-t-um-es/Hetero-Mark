@@ -1,19 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
-set(FOLDER_NAME fir_hip)
-set(SUBDIRECTORIES)
-set(SRC_FILES
-        main.hip
-        fir_hip_benchmark.hip
-)
-set(HEADER_FILES
-  fir_hip_benchmark.h
-)
-set(TEST_FILES)
-set(EXTRA_FILES)
-
-if (${HMARK_BUILD_HIP})
-  add_executable(${FOLDER_NAME} ${HEADER_FILES} ${SRC_FILES})
-  target_link_libraries(${FOLDER_NAME}
-      fir time_measurement command_line_option benchmark)
-endif ()
+if (HMARK_BUILD_HIP)
+    HIP_ADD_EXECUTABLE(fir_hip main.cc fir_hip_benchmark.cu fir_hip_benchmark.h)
+    target_include_directories(fir_hip PUBLIC ${CMAKE_SOURCE_DIR})
+    target_link_libraries(fir_hip fir time_measurement command_line_option benchmark)
+endif (HMARK_BUILD_HIP)

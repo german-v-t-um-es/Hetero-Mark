@@ -1,20 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
-set(FOLDER_NAME kmeans_hip)
-set(SUBDIRECTORIES)
-set(SRC_FILES
-        main.hip
-        kmeans_hip_benchmark.hip
-)
-set(HEADER_FILES
-  kmeans_hip_benchmark.h
-)
-set(TEST_FILES)
-set(EXTRA_FILES)
-
-if (${HMARK_BUILD_HIP})
-  add_executable(${FOLDER_NAME} ${HEADER_FILES} ${SRC_FILES})
-  set_source_files_properties(kmeans_hip_benchmark.hip PROPERTIES LANGUAGE HIP)
-  target_link_libraries(${FOLDER_NAME}
-      kmeans time_measurement command_line_option benchmark hip::host hip::device)
-endif ()
+if (HMARK_BUILD_HIP)
+    HIP_ADD_EXECUTABLE(kmeans_hip main.cc kmeans_hip_benchmark.cu kmeans_hip_benchmark.h)
+    target_include_directories(kmeans_hip PUBLIC ${CMAKE_SOURCE_DIR})
+    target_link_libraries(kmeans_hip kmeans time_measurement command_line_option benchmark)
+endif (HMARK_BUILD_HIP)
