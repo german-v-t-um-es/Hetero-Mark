@@ -16,6 +16,6 @@ set(HEADER_FILES
 
 add_library(${FOLDER_NAME} ${SRC_FILES} ${HEADER_FILES})
 
-foreach(subdir ${SUBDIRECTORIES})
-    add_subdirectory(${subdir})
-endforeach(subdir)
+# foreach(subdir ${SUBDIRECTORIES})
+#     add_subdirectory(${subdir})
+# endforeach(subdir)
