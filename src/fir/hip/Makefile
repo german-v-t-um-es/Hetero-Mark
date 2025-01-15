@@ -1,5 +1,5 @@
 # Source files
-CPPSRC = main.cc aes_hip_benchmark.cu
+CPPSRC = main.cc fir_hip_benchmark.cu
 
 # Executable name
 EXECUTABLE = fir.gem5
